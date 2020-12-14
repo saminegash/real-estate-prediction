@@ -1,30 +1,33 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import utils
 
 app = Flask(__name__)
 
 
-@app.route('/hello')
-def hello():
-    return 'HI'
+@app.route('/', methods=['GET'])
+def Home():
+    return render_template('real_estate.html')
 
 
-@app.route('/predict_price', methods=['POST'])
+@app.route('/predict_price', methods=['GET', 'POST'])
 def predict_price():
-    area = float(request.form['area'])
-    rooms = int(request.form['rooms'])
-    suites = int(request.form['suites'])
-    bathrooms = int(request.form['bathrooms'])
-    parkings = int(request.form['parkings'])
-    neighborhood = request.form['neighborhood']
+    if request.method == 'POST':
+        area = float(request.form.get('area'))
 
-    response = jsonify({
-        'estimated_price': utils.get_estimated_price(neighborhood, area, rooms, suites, bathrooms, parkings)
-    })
+        rooms = int(request.form.get('rooms'))
+        suites = int(request.form.get('suites'))
+        bathrooms = int(request.form.get('bathrooms'))
+        parkings = int(request.form.get('parkings'))
+        neighborhood = request.form.get('neighborhood')
 
-    response.headers.add('Access-Control-Allow-Origin', '*')
-
-    return response
+        response = utils.get_estimated_price(
+            neighborhood, area, rooms, suites, bathrooms, parkings)
+        if response < 0:
+            return render_template('real_estate.html', prediction_texts="The price is below zero", prediction_text_dollar="The price is below zero")
+        else:
+            return render_template('real_estate.html', prediction_text="{:.2f}R$".format(response), prediction_text_dollar="{:.2f}$".format(response/5.12))
+    else:
+        return render_template('real_estate.html')
 
 
 if __name__ == "__main__":
