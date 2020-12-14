@@ -33,4 +33,4 @@ def predict_price():
 if __name__ == "__main__":
     print('Starting python Flask Server for Real estate Prediction')
     utils.load_saved_model()
-    app.run()
+    app.run(debug=True)
