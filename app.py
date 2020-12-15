@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def Home():
-    return render_template('real_estate.html')
+    return render_template('real_estate.html', data=[{'name':'JA'}, {'name':'JP'}])
 
 
 @app.route('/predict_price', methods=['GET', 'POST'])
@@ -23,11 +23,11 @@ def predict_price():
         response = utils.get_estimated_price(
             neighborhood, area, rooms, suites, bathrooms, parkings)
         if response < 0:
-            return render_template('real_estate.html', prediction_texts="The price is below zero", prediction_text_dollar="The price is below zero")
+            return render_template('real_estate.html', prediction_texts="The price is below zero", prediction_text_dollar="The price is below zero",data=[{'name':'JA'}, {'name':'JP'}])
         else:
-            return render_template('real_estate.html', prediction_text="{:.2f}R$".format(response), prediction_text_dollar="{:.2f}$".format(response/5.12))
+            return render_template('real_estate.html', prediction_text="{:.2f}R$".format(response), prediction_text_dollar="{:.2f}$".format(response/5.12),data=[{'name':'JA'}, {'name':'JP'}])
     else:
-        return render_template('real_estate.html')
+        return render_template('real_estate.html', data=[{'name':'JA'}, {'name':'JP'}])
 
 
 if __name__ == "__main__":

@@ -90,10 +90,11 @@
 					</div>
 					<h2>Neighborhood</h2>
 					<div>
-						<select class="location" name="" id="uiLocations">
+						<select class="location" name="neighborhood" id="uiLocations">
 							<option value="" disabled="disabled" selected="selected">Choose a Neighborhood</option>
-							<option>JA</option>
-							<option>JP</option>
+								{% for o in data %}
+									<option value="{{ o.name }}">{{ o.name }}</option>
+								{% endfor %}
 						</select>
 					</div>
 
