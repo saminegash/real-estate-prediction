@@ -18,7 +18,7 @@ def load_saved_model():
         __model = pickle.load(f)
 def get_estimated_price(neighborhood, area, rooms, suites, bathrooms, parkings):
     try:
-        loc_index = __data_columns.loc_index(location.lower())
+        loc_index = __data_columns.loc_index(neighborhood.lower())
     except:
         loc_index = -1
 
